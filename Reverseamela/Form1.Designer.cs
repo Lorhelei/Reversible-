@@ -47,10 +47,7 @@
             this.webBrowser7 = new System.Windows.Forms.WebBrowser();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.webBrowser6 = new System.Windows.Forms.WebBrowser();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.Dragthis = new System.Windows.Forms.WebBrowser();
             this.label2 = new System.Windows.Forms.Label();
             this.tbxUrl = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -63,6 +60,12 @@
             this.cbTinEye = new System.Windows.Forms.CheckBox();
             this.cbGoogle = new System.Windows.Forms.CheckBox();
             this.btnOpenBrowser = new System.Windows.Forms.Button();
+            this.pbLoading = new System.Windows.Forms.PictureBox();
+            this.pbDragit = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.wbSelected = new System.Windows.Forms.WebBrowser();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -72,20 +75,22 @@
             this.tabPage2.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.panel1.SuspendLayout();
             this.gpSauceBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLoading)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDragit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(479, 14);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(94, 23);
             this.button1.TabIndex = 1;
-            this.button1.Text = "Load";
+            this.button1.Text = "Load Directory";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // btnDoTheThing
             // 
@@ -96,13 +101,15 @@
             this.btnDoTheThing.Text = "Upload";
             this.btnDoTheThing.UseVisualStyleBackColor = true;
             this.btnDoTheThing.Click += new System.EventHandler(this.button2_Click);
+            this.btnDoTheThing.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // tbxDireccion
             // 
-            this.tbxDireccion.Location = new System.Drawing.Point(12, 14);
+            this.tbxDireccion.Location = new System.Drawing.Point(42, 14);
             this.tbxDireccion.Name = "tbxDireccion";
-            this.tbxDireccion.Size = new System.Drawing.Size(461, 20);
+            this.tbxDireccion.Size = new System.Drawing.Size(431, 20);
             this.tbxDireccion.TabIndex = 4;
+            this.tbxDireccion.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // dataGridView1
             // 
@@ -121,6 +128,7 @@
             this.dataGridView1.Size = new System.Drawing.Size(461, 599);
             this.dataGridView1.TabIndex = 5;
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
+            this.dataGridView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // tabControl1
             // 
@@ -136,10 +144,12 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(667, 629);
             this.tabControl1.TabIndex = 6;
+            this.tabControl1.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.webBrowser1);
+            this.tabPage3.ForeColor = System.Drawing.Color.Lime;
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -150,6 +160,7 @@
             // 
             // webBrowser1
             // 
+            this.webBrowser1.AllowWebBrowserDrop = false;
             this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webBrowser1.Location = new System.Drawing.Point(3, 3);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
@@ -171,6 +182,7 @@
             // 
             // webBrowser2
             // 
+            this.webBrowser2.AllowWebBrowserDrop = false;
             this.webBrowser2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webBrowser2.Location = new System.Drawing.Point(0, 0);
             this.webBrowser2.MinimumSize = new System.Drawing.Size(20, 20);
@@ -192,6 +204,7 @@
             // 
             // webBrowser3
             // 
+            this.webBrowser3.AllowWebBrowserDrop = false;
             this.webBrowser3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webBrowser3.Location = new System.Drawing.Point(0, 0);
             this.webBrowser3.MinimumSize = new System.Drawing.Size(20, 20);
@@ -214,6 +227,7 @@
             // 
             // webBrowser4
             // 
+            this.webBrowser4.AllowWebBrowserDrop = false;
             this.webBrowser4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webBrowser4.Location = new System.Drawing.Point(3, 3);
             this.webBrowser4.MinimumSize = new System.Drawing.Size(20, 20);
@@ -236,6 +250,7 @@
             // 
             // webBrowser5
             // 
+            this.webBrowser5.AllowWebBrowserDrop = false;
             this.webBrowser5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webBrowser5.Location = new System.Drawing.Point(3, 3);
             this.webBrowser5.MinimumSize = new System.Drawing.Size(20, 20);
@@ -258,6 +273,7 @@
             // 
             // webBrowser7
             // 
+            this.webBrowser7.AllowWebBrowserDrop = false;
             this.webBrowser7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webBrowser7.Location = new System.Drawing.Point(3, 3);
             this.webBrowser7.MinimumSize = new System.Drawing.Size(20, 20);
@@ -279,6 +295,7 @@
             // 
             // webBrowser6
             // 
+            this.webBrowser6.AllowWebBrowserDrop = false;
             this.webBrowser6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webBrowser6.Location = new System.Drawing.Point(3, 3);
             this.webBrowser6.MinimumSize = new System.Drawing.Size(20, 20);
@@ -287,18 +304,6 @@
             this.webBrowser6.Size = new System.Drawing.Size(653, 597);
             this.webBrowser6.TabIndex = 0;
             this.webBrowser6.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser6_DocumentCompleted);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Location = new System.Drawing.Point(479, 43);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(277, 274);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 7;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.DragDrop += new System.Windows.Forms.DragEventHandler(this.pictureBox1_DragDrop);
-            this.pictureBox1.DragEnter += new System.Windows.Forms.DragEventHandler(this.pictureBox1_DragEnter);
             // 
             // lblStatus
             // 
@@ -310,27 +315,7 @@
             this.lblStatus.TabIndex = 8;
             this.lblStatus.Text = "Hello!";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel1
-            // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.Dragthis);
-            this.panel1.Location = new System.Drawing.Point(0, -2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(16, 10);
-            this.panel1.TabIndex = 9;
-            // 
-            // Dragthis
-            // 
-            this.Dragthis.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Dragthis.Location = new System.Drawing.Point(0, 0);
-            this.Dragthis.MinimumSize = new System.Drawing.Size(20, 20);
-            this.Dragthis.Name = "Dragthis";
-            this.Dragthis.ScriptErrorsSuppressed = true;
-            this.Dragthis.ScrollBarsEnabled = false;
-            this.Dragthis.Size = new System.Drawing.Size(20, 20);
-            this.Dragthis.TabIndex = 0;
-            this.Dragthis.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.Dragthis_Navigated);
+            this.lblStatus.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // label2
             // 
@@ -341,6 +326,7 @@
             this.label2.Size = new System.Drawing.Size(57, 13);
             this.label2.TabIndex = 10;
             this.label2.Text = "Selected";
+            this.label2.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // tbxUrl
             // 
@@ -349,6 +335,7 @@
             this.tbxUrl.Size = new System.Drawing.Size(276, 20);
             this.tbxUrl.TabIndex = 11;
             this.tbxUrl.TextChanged += new System.EventHandler(this.tbxUrl_TextChanged);
+            this.tbxUrl.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // label3
             // 
@@ -360,6 +347,7 @@
             this.label3.TabIndex = 8;
             this.label3.Text = "Url:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label3.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // gpSauceBox
             // 
@@ -372,10 +360,11 @@
             this.gpSauceBox.Controls.Add(this.cbGoogle);
             this.gpSauceBox.Location = new System.Drawing.Point(479, 413);
             this.gpSauceBox.Name = "gpSauceBox";
-            this.gpSauceBox.Size = new System.Drawing.Size(277, 153);
+            this.gpSauceBox.Size = new System.Drawing.Size(277, 131);
             this.gpSauceBox.TabIndex = 12;
             this.gpSauceBox.TabStop = false;
             this.gpSauceBox.Text = "Sources";
+            this.gpSauceBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // cbWhatAnime
             // 
@@ -460,27 +449,85 @@
             this.cbGoogle.TabIndex = 0;
             this.cbGoogle.Text = "Images Google";
             this.cbGoogle.UseVisualStyleBackColor = true;
+            this.cbGoogle.CheckedChanged += new System.EventHandler(this.cbGoogle_CheckedChanged);
             // 
             // btnOpenBrowser
             // 
-            this.btnOpenBrowser.Location = new System.Drawing.Point(479, 572);
+            this.btnOpenBrowser.Location = new System.Drawing.Point(479, 550);
             this.btnOpenBrowser.Name = "btnOpenBrowser";
-            this.btnOpenBrowser.Size = new System.Drawing.Size(276, 27);
+            this.btnOpenBrowser.Size = new System.Drawing.Size(276, 35);
             this.btnOpenBrowser.TabIndex = 1;
             this.btnOpenBrowser.Text = "Open in Browser";
             this.btnOpenBrowser.UseVisualStyleBackColor = true;
             this.btnOpenBrowser.Click += new System.EventHandler(this.btnOpenBrowser_Click);
+            this.btnOpenBrowser.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
+            // 
+            // pbLoading
+            // 
+            this.pbLoading.BackColor = System.Drawing.Color.Transparent;
+            this.pbLoading.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbLoading.Image = global::Reverseamela.Properties.Resources.giphy;
+            this.pbLoading.Location = new System.Drawing.Point(1446, 295);
+            this.pbLoading.Name = "pbLoading";
+            this.pbLoading.Size = new System.Drawing.Size(284, 290);
+            this.pbLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pbLoading.TabIndex = 14;
+            this.pbLoading.TabStop = false;
+            // 
+            // pbDragit
+            // 
+            this.pbDragit.BackgroundImage = global::Reverseamela.Properties.Resources.Draggit;
+            this.pbDragit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pbDragit.Location = new System.Drawing.Point(1459, 210);
+            this.pbDragit.Name = "pbDragit";
+            this.pbDragit.Size = new System.Drawing.Size(100, 50);
+            this.pbDragit.TabIndex = 13;
+            this.pbDragit.TabStop = false;
+            this.pbDragit.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbDragit_DragDrop);
+            this.pbDragit.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbDragit_DragEnter);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.White;
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox1.Location = new System.Drawing.Point(479, 43);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(277, 274);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 7;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(13, 14);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(23, 23);
+            this.button2.TabIndex = 15;
+            this.button2.Text = "S";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
+            // wbSelected
+            // 
+            this.wbSelected.AllowWebBrowserDrop = false;
+            this.wbSelected.Location = new System.Drawing.Point(1498, 43);
+            this.wbSelected.MinimumSize = new System.Drawing.Size(20, 20);
+            this.wbSelected.Name = "wbSelected";
+            this.wbSelected.ScrollBarsEnabled = false;
+            this.wbSelected.Size = new System.Drawing.Size(143, 119);
+            this.wbSelected.TabIndex = 16;
+            this.wbSelected.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.wbSelected_DocumentCompleted);
             // 
             // Form1
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1441, 655);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(1441, 646);
+            this.Controls.Add(this.pbLoading);
+            this.Controls.Add(this.pbDragit);
             this.Controls.Add(this.lblStatus);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.tbxDireccion);
@@ -490,6 +537,10 @@
             this.Controls.Add(this.btnDoTheThing);
             this.Controls.Add(this.tbxUrl);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.wbSelected);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.button2);
             this.KeyPreview = true;
             this.Name = "Form1";
             this.Text = "Reversible!";
@@ -505,10 +556,11 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.panel1.ResumeLayout(false);
             this.gpSauceBox.ResumeLayout(false);
             this.gpSauceBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLoading)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDragit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -534,8 +586,6 @@
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.WebBrowser webBrowser7;
         private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.WebBrowser Dragthis;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbxUrl;
         private System.Windows.Forms.Label label3;
@@ -550,6 +600,11 @@
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.WebBrowser webBrowser6;
         private System.Windows.Forms.Button btnOpenBrowser;
+        private System.Windows.Forms.PictureBox pbDragit;
+        private System.Windows.Forms.PictureBox pbLoading;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.WebBrowser wbSelected;
     }
 }
 

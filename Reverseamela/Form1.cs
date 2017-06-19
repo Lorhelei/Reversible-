@@ -6,8 +6,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Reverseamela.Properties;
@@ -137,7 +139,11 @@ namespace Reverseamela
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            panel1.Size = new Size(0,0);
+            pbDragit.Location = new Point(0, 0);
+            pbDragit.Size = new Size(0,0);
+            pbDragit.AllowDrop = true;
+            pbLoading.Location = new Point(0,0);
+            pbLoading.Size = new Size(0, 0);
             ConstructGrid();
             cmdOutput = new StringBuilder("");
             cmdProcess = new Process();
@@ -183,13 +189,25 @@ namespace Reverseamela
 
         private void button2_Click(object sender, EventArgs e)
         {
-            UploadImage();
-            ReverseSearch();         
+            if (direccion != "")
+            {
+                lblStatus.Text = "Uploading...";
+                UploadImage();
+                pbLoading.Size = new Size(284, 290);
+                pbLoading.Location = new Point(476, 323);
+                lblStatus.Text = "Loading...";
+                ReverseSearch();
+            }
+            else
+            {
+                lblStatus.Text = "No file selected";
+            }
+
         }
 
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            direccionindex = dataGridView1.SelectedCells[0].ColumnIndex + dataGridView1.SelectedCells[0].RowIndex*4;
+            direccionindex = dataGridView1.SelectedCells[0].ColumnIndex + dataGridView1.SelectedCells[0].RowIndex*3;
             direccion = imgList[direccionindex];
             pictureBox1.ImageLocation = imgList[direccionindex];
         }
@@ -202,9 +220,7 @@ namespace Reverseamela
                 cmdStreamWriter.WriteLine(@"cd C:\Python\Scripts");
                 cmdStreamWriter.WriteLine("uguu -r " + '\u0022' + direccion + '\u0022');
                 cmdStreamWriter.WriteLine("exit");
-                lblStatus.Text = "Uploading...";
                 cmdProcess.WaitForExit();
-                lblStatus.Text = "Loading...";
                 GetUrlUguu();
             }
             else
@@ -301,41 +317,16 @@ namespace Reverseamela
             }
         }
 
-        private void pictureBox1_DragDrop(object sender, DragEventArgs e)
-        {
-
-        }
-
-        private void pictureBox1_DragEnter(object sender, DragEventArgs e)
-        {
-
-        }
-
         private void Form1_DragDrop(object sender, DragEventArgs e)
         {
-            panel1.Size = new Size(0, 0);
+            pbDragit.Size = new Size(0, 0);
         }
 
         private void Form1_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.All;
-            Dragthis.Url = new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Draggit.jpg");
-            panel1.Size = ClientSize;
+            pbDragit.Size = ClientSize;
 
-        }
-
-        private void Dragthis_Navigated(object sender, WebBrowserNavigatedEventArgs e)
-        {
-            Uri local = new Uri(Directory.GetCurrentDirectory() + "\\Resources\\Draggit.jpg");
-            if (Dragthis.Url != local)
-            {
-                var url = Dragthis.Url;
-                string dir = Dragthis.Url.ToString();
-                direccion = url.ToString().Substring(8, dir.Length - 8);
-                pictureBox1.ImageLocation = direccion;
-                Dragthis.Url = local;
-                panel1.Size = new Size(0, 0);
-            }
         }
 
         private void tbxUrl_TextChanged(object sender, EventArgs e)
@@ -343,16 +334,28 @@ namespace Reverseamela
             if (tbxUrl.Text == "")
             {
                 btnDoTheThing.Text = "Upload";
+                wbSelected.Visible = false;
             }
             else
             {
-                btnDoTheThing.Text = "Send Link";
+                if (tbxUrl.Text.StartsWith("http"))
+                {
+                    btnDoTheThing.Text = "Send Link";
+                }
+
             }
         }
 
         private void webBrowser6_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            if (webBrowser1.IsBusy)
+            {
+                lblStatus.Text = "1 ocupado!";
+            }
+            
             lblStatus.Text = "Done!";
+            pbLoading.Location = new Point(0, 0);
+            pbLoading.Size = new Size(0, 0);
         }
 
         private void btnOpenBrowser_Click(object sender, EventArgs e)
@@ -380,6 +383,89 @@ namespace Reverseamela
                 case 6:
                     System.Diagnostics.Process.Start(webBrowser6.Url.AbsoluteUri);
                     break;
+            }
+        }
+
+        private void pbDragit_DragDrop(object sender, DragEventArgs e)
+        {
+            pbDragit.Size = new Size(0,0);
+            string[] imagePaths = (String[])e.Data.GetData(DataFormats.FileDrop);
+            if (imagePaths == null)
+            {
+                imagePaths = new string[1];
+                imagePaths[0] = (String)e.Data.GetData(DataFormats.Text);
+
+                try
+                {
+                    if (imagePaths != null)
+                    {
+                        wbSelected.Location = new Point(479, 43);
+                        wbSelected.Size = new Size(277, 274);
+                        wbSelected.Url = new Uri(imagePaths[0]);
+                        
+                        direccion = imagePaths[0];
+                        tbxUrl.Text = imagePaths[0];
+                        tbxUrl.Text = System.Web.HttpUtility.UrlEncode(imagePaths[0]);
+                    }
+                }
+                catch (Exception)
+                {
+                    lblStatus.Text = "File not valid";
+                }
+
+            }
+            else
+            {
+                wbSelected.Size = new Size(0,0);
+                pictureBox1.ImageLocation = imagePaths[0];
+                direccion = imagePaths[0];
+            }
+
+
+            
+
+        }
+
+        private void pbDragit_DragEnter(object sender, DragEventArgs e)
+        {
+             e.Effect = DragDropEffects.Move;
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            folderBrowserDialog1.ShowDialog();
+            tbxDireccion.Text = folderBrowserDialog1.SelectedPath;
+            SetImagesInList();
+            SetImagesInGrid();
+        }
+
+        private void wbSelected_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            var imagen = wbSelected.Document.Images;
+            int w = Convert.ToInt32(imagen[0].GetAttribute("WIDTH"));
+            int h = Convert.ToInt32(imagen[0].GetAttribute("HEIGHT"));
+            float ww = wbSelected.Size.Width;
+            float hh = wbSelected.Size.Height;
+
+            if (wbSelected.Size.Width < w)
+            {
+                var wb = w / ww;
+                imagen[0].SetAttribute("WIDTH", ((w/wb)-15).ToString());
+                imagen[0].SetAttribute("HEIGHT", ((h/wb)-15).ToString());
+            }
+
+
+        }
+
+        private void cbGoogle_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbGoogle.Checked)
+            {
+                
+            }
+            else
+            {
+                tabPage3.BackColor = Color.Green;
             }
         }
     }
